@@ -12,7 +12,7 @@ def ema(x,p):
         ema = [prev_ema]
         m = len(x)
         multiplier = 2/float(p+1)
-        for i in xrange(p,m):
+        for i in range(p,m):
                 cur_ema = (x[i] - prev_ema)*multiplier + prev_ema
                 prev_ema = cur_ema
                 ema.append(cur_ema)
@@ -20,37 +20,37 @@ def ema(x,p):
 
 #Relative Strength Index
 def getRSI(x):
-	x = x.squeeze()
-        n = len(x)
-        x0 = x[:n-1]
-        x1 = x[1:]
-        change = x1 - x0
-        avgGain = []
-        avgLoss = []
-        loss = 0
-        gain = 0
-        for i in xrange(14):
-                if change[i] > 0 :
-                        gain += change[i]
-                elif change[i] < 0:
-                        loss += abs(change[i])
-        averageGain = gain/14.0
-        averageLoss = loss/14.0
-        avgGain.append(averageGain)
-        avgLoss.append(averageLoss)
-        for i in xrange(14,n-1):
-                if change[i] >= 0:
-                        avgGain.append((avgGain[-1]*13+change[i])/14.0)
-                        avgLoss.append((avgLoss[-1]*13)/14.0)
-                else:
-                        avgGain.append((avgGain[-1]*13)/14.0)
-                        avgLoss.append((avgLoss[-1]*13+abs(change[i]))/14.0)
-        avgGain = np.array(avgGain)
-        avgLoss = np.array(avgLoss)
-	RS = avgGain/avgLoss
-        RSI = 100 -(100/(1+RS))
+    x = x.squeeze()
+    n = len(x)
+    x0 = x[:n-1]
+    x1 = x[1:]
+    change = x1 - x0
+    avgGain = []
+    avgLoss = []
+    loss = 0
+    gain = 0
+    for i in range(14):
+            if change[i] > 0 :
+                    gain += change[i]
+            elif change[i] < 0:
+                    loss += abs(change[i])
+    averageGain = gain/14.0
+    averageLoss = loss/14.0
+    avgGain.append(averageGain)
+    avgLoss.append(averageLoss)
+    for i in range(14,n-1):
+            if change[i] >= 0:
+                    avgGain.append((avgGain[-1]*13+change[i])/14.0)
+                    avgLoss.append((avgLoss[-1]*13)/14.0)
+            else:
+                    avgGain.append((avgGain[-1]*13)/14.0)
+                    avgLoss.append((avgLoss[-1]*13+abs(change[i]))/14.0)
+    avgGain = np.array(avgGain)
+    avgLoss = np.array(avgLoss)
+    RS = avgGain/avgLoss
+    RSI = 100 -(100/(1+RS))
         
-        return np.c_[RSI,x1[13:]]
+    return np.c_[RSI,x1[13:]]
 
 def getStochasticOscillator(x):
 
@@ -60,7 +60,7 @@ def getStochasticOscillator(x):
 	n = len(high)
 	highestHigh = []
 	lowestLow = []
-	for i in xrange(n-13):
+	for i in range(n-13):
 		highestHigh.append(high[i:i+14].max())
 		lowestLow.append(low[i:i+14].min())
 	highestHigh = np.array(highestHigh)
@@ -71,20 +71,20 @@ def getStochasticOscillator(x):
 
 def getWilliams(x):
 
-	high = x[:,1].squeeze()
-        low = x[:,2].squeeze()
-        close = x[:,3].squeeze()
-        n = len(high)
-        highestHigh = []
-        lowestLow = []
-        for i in xrange(n-13):
-                highestHigh.append(high[i:i+14].max())
-                lowestLow.append(low[i:i+14].min())
-        highestHigh = np.array(highestHigh)
-        lowestLow = np.array(lowestLow)
-        w = -100*((highestHigh-close[13:])/(highestHigh-lowestLow))
-        
-        return np.c_[w,close[13:]]
+    high = x[:,1].squeeze()
+    low = x[:,2].squeeze()
+    close = x[:,3].squeeze()
+    n = len(high)
+    highestHigh = []
+    lowestLow = []
+    for i in range(n-13):
+            highestHigh.append(high[i:i+14].max())
+            lowestLow.append(low[i:i+14].min())
+    highestHigh = np.array(highestHigh)
+    lowestLow = np.array(lowestLow)
+    w = -100*((highestHigh-close[13:])/(highestHigh-lowestLow))
+      
+    return np.c_[w,close[13:]]
 
 def getMACD(close):
 
@@ -115,7 +115,7 @@ def getOnBalanceVolume(X):
         OBV = []
         prev_OBV = 0
 
-        for i in xrange(n-1):
+        for i in range(n-1):
                 if change[i] > 0:
                         current_OBV = prev_OBV + volume[i]
                 elif change[i] < 0:

@@ -66,8 +66,8 @@ class Evaluator:
 	def oob_vs_n_trees(self,max_trees,Xtrain, ytrain):
 
 		# First set up the figure, the axis, and the plot element we want to animate
-		print ""
-		print "Number of Trees\t\tOOB Error Rate"
+		print("")
+		print("Number of Trees\t\tOOB Error Rate")
 		fig = plt.figure()
 		ax = plt.axes(xlim=(0, max_trees), ylim=(0,1))
 		line, = ax.plot([], [], lw=2)
@@ -86,7 +86,7 @@ class Evaluator:
 			model.fit(Xtrain,ytrain)
 			oob_error = 1 - model.oob_score_
 			oob_errors.append(oob_error)
-			print "{}\t\t\t{}".format(i,oob_error)
+			print("{}\t\t\t{}".format(i,oob_error))
 
 			line.set_data(number_of_trees[:len(oob_errors)], oob_errors)
 			return line,
@@ -101,7 +101,7 @@ class Evaluator:
 
 
 	
-		# for i in xrange(2,max_trees + 1):
+		# for i in range(2,max_trees + 1):
 		# 	model = RandomForestClassifier(warm_start = True, 
 		# 		oob_score = True, 
 		# 		n_estimators = i)
@@ -113,12 +113,12 @@ class Evaluator:
 
 	def plotClassificationResult(self):
 		self.confusionMatrix()
-		x = [i + 3.0 for i in xrange(4)]
+		x = [i + 3.0 for i in range(4)]
 		xlabel = ["TP","FN","FP","TN"]
 		plt.figure()
 		plt.grid(True)
 		plt.bar(x,self.confusion_matrix.reshape(-1), color= np.random.random((4,3)))
-		plt.xticks([i + 3.0 for i in xrange(4)],xlabel)
+		plt.xticks([i + 3.0 for i in range(4)],xlabel)
 		plt.show(block = False)
 
 

@@ -98,19 +98,19 @@ def plotTradingStrategy(model, xplot, closeplot, Trading_Day,date):
 	tradeMap = {-1.0:"Sell",1.0:"Buy",0.0:"Buy"}
 	plt.figure()
 	plt.plot(closeplot, c = "g")
-	x = [xplot[i] for i in xrange(0,len(xplot),Trading_Day)]
-	y = [closeplot[i] for i in xrange(0, len(closeplot),Trading_Day)]
+	x = [xplot[i] for i in range(0,len(xplot),Trading_Day)]
+	y = [closeplot[i] for i in range(0, len(closeplot),Trading_Day)]
 	y_pred = model.predict(x)
-   
-   	c = [colorMap[y_pred[i]] for i in xrange(len(y_pred))]
 
-   	df = pd.DataFrame(np.c_[[ i+1 for i in xrange(0, len(xplot),Trading_Day)], x, y, [tradeMap[y_pred[i]] for i in xrange(len(y_pred)) ]],
+	c = [colorMap[y_pred[i]] for i in range(len(y_pred))]
+
+	df = pd.DataFrame(np.c_[[ i+1 for i in range(0, len(xplot),Trading_Day)], x, y, [tradeMap[y_pred[i]] for i in range(len(y_pred)) ]],
    			columns = ["Day","RSI","Stochastic Oscillator","Williams","MACD","Price Rate Of Change","On Balance Volume","Close","Buy/Sell"])
-   	df.to_csv("AAPLBuySellTradePoints.csv",index = False)
+	df.to_csv("AAPLBuySellTradePoints.csv",index = False)
 
 
-	plt.scatter([i for i in xrange(0,len(xplot),Trading_Day)],y, c = c)
-	#plt.xticks([i for i in xrange(0,len(xplot),Trading_Day)],[date[i] for i in xrange(0,len(xplot),Trading_Day)])
+	plt.scatter([i for i in range(0,len(xplot),Trading_Day)],y, c = c)
+	#plt.xticks([i for i in range(0,len(xplot),Trading_Day)],[date[i] for i in range(0,len(xplot),Trading_Day)])
 	red_patch = mpatches.Patch(color='red', label='Sell')
 	blue_patch = mpatches.Patch(color = "blue", label = "Buy")
 	plt.legend(handles = [red_patch,blue_patch])
@@ -148,10 +148,10 @@ def main(stock_symbol,Trading_Day):
 	model = RandomForestClassifier(n_estimators = 100,criterion = "gini", random_state = 0)
 
 	scores = cross_val_score(model, Xtrain, ytrain, cv = 5)	
-	print set(ytrain)
-	print "Cross Validation scores"
+	print(set(ytrain))
+	print("Cross Validation scores")
 	for i, score in enumerate(scores):
-		print "Validation Set {} score: {}".format(i, score)
+		print("Validation Set {} score: {}".format(i, score))
 	model.fit(Xtrain, ytrain)
 	y_pred = model.predict(Xtest)
 	Eval = Evaluator(Xtest,ytest,y_pred,model)
@@ -167,22 +167,22 @@ def main(stock_symbol,Trading_Day):
 	Eval.plotClassificationResult()
 	Eval.drawROC()
 	plotTradingStrategy(model,xplot,closeplot,Trading_Day,dateplot)
-	c = raw_input("Press y to generate OOB vs Number of estimators graph:")
+	c = input("Press y to generate OOB vs Number of estimators graph:")
 	if c == "y" or c == "Y":
 		Eval.oob_vs_n_trees(100,Xtrain,ytrain) 
 
 
 
 
-	# raw_input("Press enter to genereate OOB vs Number of estimators graph:")
+	# eval(input("Press enter to genereate OOB vs Number of estimators graph:")
 	# p.start()
 	# print "LOL"
 	# p.join()
 
 	
 
-stock_symbol = raw_input("Enter the stock_symbol (AAPL, AMS, AMZN, FB, MSFT, NKE, SNE, TATA, TWTR, TYO): ")
-Trading_Day = input("Enter the trading window: ")
+stock_symbol = input("Enter the stock_symbol (AAPL, AMS, AMZN, FB, MSFT, NKE, SNE, TATA, TWTR, TYO): ")
+Trading_Day = eval(input("Enter the trading window: "))
 main(stock_symbol.upper(),Trading_Day)
 	
 
