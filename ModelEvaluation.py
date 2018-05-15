@@ -16,11 +16,13 @@ class Evaluator:
 	def confusionMatrix(self):
 
 		self.confusion_matrix = confusion_matrix(self.ytest, self.y_pred)
-
+		#print self.ytest
+		#print self.y_pred
+	"""
 	def getPerformanceMetrics(self):
 
 		self.confusionMatrix()
-
+		
 		accuracy = (
 					float((self.confusion_matrix[0][0]+self.confusion_matrix[1][1]))/
 					(self.confusion_matrix[0][0]+self.confusion_matrix[0][1]+self.confusion_matrix[1][0]+self.confusion_matrix[1][1])
@@ -39,6 +41,25 @@ class Evaluator:
 			)
 
 		return accuracy, recall, precision, specificity
+	"""
+	
+
+	def getPerformanceMetrics(self):
+		
+		flag = 0
+		for i in range(len(self.ytest)):
+			if self.ytest[i] != self.y_pred[i]:
+				flag = 1
+				break
+				
+		if flag == 0:
+			if -1 in self.ytest:
+				return len(self.ytest), 0, 0, 0
+			else:
+				return 0, 0, len(self.ytest), 0
+				
+		self.confusionMatrix()
+		return self.confusion_matrix[0][0],self.confusion_matrix[1][0],self.confusion_matrix[1][1],self.confusion_matrix[0][1]
 
 	def drawROC(self):
 	
@@ -101,7 +122,7 @@ class Evaluator:
 
 
 	
-		# for i in range(2,max_trees + 1):
+		# for i in xrange(2,max_trees + 1):
 		# 	model = RandomForestClassifier(warm_start = True, 
 		# 		oob_score = True, 
 		# 		n_estimators = i)
@@ -113,12 +134,12 @@ class Evaluator:
 
 	def plotClassificationResult(self):
 		self.confusionMatrix()
-		x = [i + 3.0 for i in range(4)]
+		x = [i + 3.0 for i in xrange(4)]
 		xlabel = ["TP","FN","FP","TN"]
 		plt.figure()
 		plt.grid(True)
 		plt.bar(x,self.confusion_matrix.reshape(-1), color= np.random.random((4,3)))
-		plt.xticks([i + 3.0 for i in range(4)],xlabel)
+		plt.xticks([i + 3.0 for i in xrange(4)],xlabel)
 		plt.show(block = False)
 
 
